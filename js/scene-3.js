@@ -1,39 +1,39 @@
 
-class Scene1 extends BaseScene {
+class Scene3 extends BaseScene {
     constructor() {
-        super({ key: 'Scene1', active: true })
+        super({ key: 'Scene3', active: true })
         
         this.passwordsData = [
             {
-                text: 'q1w2e3r4',
+                text: 'mm9_gMl34@!',
                 valid: true,
-                x: 670,
-                y: 220
-            },
-            {
-                text: '_evl081',
-                valid: false,
                 x: 270,
                 y: 200
             },
             {
-                text: 'sandwich',
+                text: '__code500',
+                valid: false,
+                x: 100,
+                y: 125
+            },
+            {
+                text: '8LNP$__$()',
                 valid: false,
                 x: 300,
                 y: 500
             },
             {
-                text: '27smn13a',
+                text: 'KGB_14blr',
                 valid: true,
-                x: 150,
-                y: 350
+                x: 600,
+                y: 320
             },
             {
-                text: 'letm31in',
+                text: 'openT43_door',
                 valid: true,
-                x: 60,
-                y: 50
-            },
+                x: 40,
+                y: 70
+            }
         ];
 
         this.obstaclesObj = [
@@ -55,14 +55,24 @@ class Scene1 extends BaseScene {
             {
                 x: 700,
                 y: 100,
-                speed: 120
+                speed: 180
+            },
+            {
+                x: 500,
+                y: 400,
+                speed: 180
+            },
+            {
+                x: 400,
+                y: 600,
+                speed: 180
             }
         ]
     }
 
     goToNextScene() {
-        let spawned = new Scene2Desc();
-        this.scene.add('Scene2Desc', spawned, true);
+        let spawned = new FinishScene();
+        this.scene.add('FinishScene', spawned, true);
         this.scene.setActive(false);
     }
 }

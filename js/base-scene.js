@@ -30,11 +30,12 @@ class BaseScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ground', 'assets/bg.png');
-        this.load.image('password', 'assets/password.png');
+        this.load.image('ground', 'assets/bg.png');        
         this.load.image('obstacle', 'assets/obstacle2.png');
         this.load.image('boundaryTop', 'assets/boundary-top.png');
         this.load.image('boundaryLeft', 'assets/boundary-left.png');
+        this.load.image('star', 'assets/star.png');
+        this.load.image('life', 'assets/life.png');
 
         this.load.spritesheet('enemy',
             'assets/enemy.png',
@@ -48,6 +49,9 @@ class BaseScene extends Phaser.Scene {
     }
 
     create() {
+        this.score = 0;
+        this.correctPassNumber = this.passwordsData.filter(pass => pass.valid).length;
+
         this.add.image(400, 300, 'ground');
 
         // boundaries
@@ -63,15 +67,14 @@ class BaseScene extends Phaser.Scene {
 
         // obstacles
         this.obstacles = this.physics.add.staticGroup();
-        this.obstacles.create(600, 400, 'obstacle');
-        this.obstacles.create(150, 100, 'obstacle');
-        this.obstacles.create(500, 200, 'obstacle');
+        this.obstaclesObj.forEach( obstacle => {
+            this.obstacles.create(obstacle.x, obstacle.y, 'obstacle');
+        });
 
         this.player = this.physics.add.sprite(100, 450, 'hero');
-
         this.player.setCollideWorldBounds(true);
 
-        // hero animation
+        // player animation
         this.anims.create({
             key: 'hero_turn',
             frames: [{ key: 'hero', frame: 4 }],
@@ -110,13 +113,10 @@ class BaseScene extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
         // enemies generation
-        var i;
-        for (i = 0; i < this.numberOfEnemies; i++) {
-            var enemy = new Enemy(Phaser.Math.Between(0, 700), Phaser.Math.Between(0, 600), this, 100);
-        }
+        this.enemies.forEach( enemy => {
+            var enemy = new Enemy(enemy.x, enemy.y, this, enemy.speed);
+        });
 
         // generate passwords
         this.generatePasswords();
@@ -140,28 +140,68 @@ class BaseScene extends Phaser.Scene {
         //     .text(530, 80, 'DOWN', { color: '#000', backgroundColor: "#fff" })
         //     .setInteractive()
         //     .on('pointerdown', () => { this.currentDirection = 'DOWN'; });
-    }
 
-    //generatePasswords() {}
+        this.stars = this.physics.add.group();
+
+        this.lives = this.physics.add.group(
+            {
+                key: 'life',
+                repeat: 2,
+                setXY: { x: 700, y: 20, stepX: 30 }
+            }
+        );
+
+        this.health = 3;
+    }
 
     pickPassword(player, pass) {
         pass.alpha = 0;
         this.physics.world.disable(pass);
 
         if (pass.valid) {
-            score += 10;
+            var x = this.score * 30 + 20;
+            this.score += 1;
+            this.stars.create(x, 20, 'star');
         } else {
-            score -= 10;
+            this.hitEnemy();
         }
-        scoreText.setText('Score: ' + score);
-
-        if (score >= 10) {
-            this.scene.bringToTop('Congrats');
-            this.scene.setActive(false);
+        
+        if (this.score >= this.correctPassNumber) {
+            this.goToNextScene();
         }
     }
 
     hitEnemy() {
+        this.health--;
+        this.lives.children.entries[this.health].alpha = 0;
+        
+        if (this.health == 0) {
+            this.gameOver();
+            return;
+        }
+
+        this.player.x = 100;
+        this.player.y = 450;
+
+        var blinkNum = 0;
+        var blinkInterval = setInterval( () => {
+            blinkNum++;
+            if (blinkNum == 8) {
+                this.player.alpha = 1;
+                clearInterval(blinkInterval);
+                return;
+            }
+
+            if (this.player.alpha == 0) {
+                this.player.alpha = 1;
+            } else {
+                this.player.alpha = 0;
+            }
+        }, 400);
+
+    }
+
+    gameOver() {
         this.physics.pause();
 
         this.player.setTint(0xff0000);
@@ -177,7 +217,7 @@ class BaseScene extends Phaser.Scene {
         this.passwords = this.physics.add.group();
 
         this.passwordsData.forEach(function (passObj) {
-            var password = this.add.text(Phaser.Math.Between(0, 700), Phaser.Math.Between(0, 500), passObj.text, { fontSize: 14, backgroundColor: '#ffffff', color: '#333333' });
+            var password = this.add.text(passObj.x, passObj.y, passObj.text, { fontSize: 24, color: '#ffffff', fontStyle: 'bold', fontFamily: 'Arial' });
             password.valid = passObj.valid;
             this.physics.world.enable(password);
             this.passwords.add(password);

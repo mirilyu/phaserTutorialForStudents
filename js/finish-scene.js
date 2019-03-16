@@ -1,7 +1,7 @@
 
-class CongratsScene extends Phaser.Scene {
+class FinishScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'Congrats', active: true })
+        super({ key: 'FinishScene', active: true })
     }
 
     create() {
@@ -14,8 +14,7 @@ class CongratsScene extends Phaser.Scene {
             .setInteractive()
             .setOrigin(0.5, 0.5)
             .on('pointerdown', () => { 
-                //this.scene.sendToBack();
-                this.scene.bringToTop('Intro');
+
             });
         
     }
