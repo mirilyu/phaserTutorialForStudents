@@ -1,7 +1,9 @@
 
 class Scene2 extends BaseScene {
     constructor() {
-        super({ key: 'Scene2', active: true });
+        super({ key: 'Scene2', active: true })
+
+        this.groundImg = 'ground_2';
 
         this.passwordsData = [
             {
@@ -39,15 +41,23 @@ class Scene2 extends BaseScene {
         this.obstaclesObj = [
             {
                 x: 200,
-                y: 200
+                y: 200,
+                key: 'obstacle_2'
             },
             {
                 x: 500,
-                y: 80
+                y: 80,
+                key: 'obstacle_2'
             },
             {
                 x: 700,
-                y: 500
+                y: 500,
+                key: 'obstacle_2.1'
+            },
+            {
+                x: 400,
+                y: 350,
+                key: 'obstacle_2.1'
             }
         ]
         
@@ -55,12 +65,14 @@ class Scene2 extends BaseScene {
             {
                 x: 700,
                 y: 100,
-                speed: 160
+                speed: 160,
+                key: 'enemy_2'
             },
             {
                 x: 500,
                 y: 400,
-                speed: 160
+                speed: 160,
+                key: 'enemy_2'
             }
         ]
     }

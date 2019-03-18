@@ -30,15 +30,32 @@ class BaseScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ground', 'assets/bg.png');        
-        this.load.image('obstacle', 'assets/obstacle2.png');
+        this.load.image('ground_1', 'assets/bg1.png');
+        this.load.image('ground_2', 'assets/bg2.png');
+        this.load.image('ground_3', 'assets/bg3.png');       
+
+        this.load.image('obstacle_1', 'assets/obstacle1.png');
+        this.load.image('obstacle_1.2', 'assets/obstacle1.2.png');
+        this.load.image('obstacle_2', 'assets/obstacle2.png');
+        this.load.image('obstacle_2.1', 'assets/obstacle2.1.png');
+        this.load.image('obstacle_3', 'assets/obstacle3.png');
+        this.load.image('obstacle_3.1', 'assets/obstacle3.1.png');
+
         this.load.image('boundaryTop', 'assets/boundary-top.png');
         this.load.image('boundaryLeft', 'assets/boundary-left.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('life', 'assets/life.png');
 
-        this.load.spritesheet('enemy',
-            'assets/enemy.png',
+        this.load.spritesheet('enemy_1',
+            'assets/enemy1.png',
+            { frameWidth: 60, frameHeight: 52 }
+        );
+        this.load.spritesheet('enemy_2',
+            'assets/enemy2.png',
+            { frameWidth: 60, frameHeight: 52 }
+        );
+        this.load.spritesheet('enemy_3',
+            'assets/enemy3.png',
             { frameWidth: 60, frameHeight: 52 }
         );
 
@@ -52,7 +69,7 @@ class BaseScene extends Phaser.Scene {
         this.score = 0;
         this.correctPassNumber = this.passwordsData.filter(pass => pass.valid).length;
 
-        this.add.image(400, 300, 'ground');
+        this.add.image(400, 300, this.groundImg);
 
         // boundaries
         this.boundaries = this.physics.add.staticGroup();
@@ -68,7 +85,7 @@ class BaseScene extends Phaser.Scene {
         // obstacles
         this.obstacles = this.physics.add.staticGroup();
         this.obstaclesObj.forEach( obstacle => {
-            this.obstacles.create(obstacle.x, obstacle.y, 'obstacle');
+            this.obstacles.create(obstacle.x, obstacle.y, obstacle.key);
         });
 
         this.player = this.physics.add.sprite(100, 450, 'hero');
@@ -115,7 +132,7 @@ class BaseScene extends Phaser.Scene {
 
         // enemies generation
         this.enemies.forEach( enemy => {
-            var enemy = new Enemy(enemy.x, enemy.y, this, enemy.speed);
+            var enemy = new Enemy(enemy.x, enemy.y, this, enemy.speed, enemy.key);
         });
 
         // generate passwords
@@ -228,33 +245,34 @@ class BaseScene extends Phaser.Scene {
 }
 
 class Enemy {
-    constructor(x, y, game, speed) {
+    constructor(x, y, game, speed, enemyKey) {
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.game = game;
+        this.enemyKey = enemyKey;
 
-        this.enemy = this.game.physics.add.sprite(this.x, this.y, 'enemy');
+        this.enemy = this.game.physics.add.sprite(this.x, this.y, this.enemyKey);
         this.enemy.setCollideWorldBounds(true);
         this.enemy.dir = 'left';
         this.game.physics.add.collider(this.game.player, this.enemy, this.game.hitEnemy, null, this.game);
 
         game.anims.create({
-            key: 'enemy_left',
-            frames: game.anims.generateFrameNumbers('enemy', { start: 6, end: 11 }),
+            key: this.enemyKey + '_left',
+            frames: game.anims.generateFrameNumbers(this.enemyKey, { start: 6, end: 11 }),
             frameRate: 10,
             repeat: -1
         });
     
         game.anims.create({
-            key: 'enemy_turn',
-            frames: [{ key: 'enemy', frame: 4 }],
+            key: this.enemyKey + '_turn',
+            frames: [{ key: this.enemyKey, frame: 4 }],
             frameRate: 20
         });
     
         game.anims.create({
-            key: 'enemy_right',
-            frames: game.anims.generateFrameNumbers('enemy', { start: 0, end: 5 }),
+            key: this.enemyKey + '_right',
+            frames: game.anims.generateFrameNumbers(this.enemyKey, { start: 0, end: 5 }),
             frameRate: 10,
             repeat: -1
         });
@@ -301,24 +319,24 @@ class Enemy {
     enemyGoLeft(speed) {
         this.enemy.setVelocityX(speed - speed * 2);
         this.enemy.setVelocityY(0);
-        this.enemy.anims.play('enemy_left', true);
+        this.enemy.anims.play(this.enemyKey + '_left', true);
     }
 
     enemyGoRight(speed) {
         this.enemy.setVelocityX(speed);
         this.enemy.setVelocityY(0);
-        this.enemy.anims.play('enemy_right', true);
+        this.enemy.anims.play(this.enemyKey + '_right', true);
     }
 
     enemyGoUp(speed) {
         this.enemy.setVelocityX(0);
         this.enemy.setVelocityY(speed - speed * 2);
-        this.enemy.anims.play('enemy_left', true);
+        this.enemy.anims.play(this.enemyKey + '_left', true);
     }
 
     enemyGoDown(speed) {
         this.enemy.setVelocityX(0);
         this.enemy.setVelocityY(speed);
-        this.enemy.anims.play('enemy_right', true);
+        this.enemy.anims.play(this.enemyKey + '_right', true);
     }  
 }
