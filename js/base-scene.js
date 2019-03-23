@@ -46,6 +46,15 @@ class BaseScene extends Phaser.Scene {
         this.load.image('star', 'assets/star.png');
         this.load.image('life', 'assets/life.png');
 
+        
+        this.load.image('intro2', 'assets/intro2.png');
+        this.load.image('intro3', 'assets/intro3.png');
+        this.load.image('intro4', 'assets/intro4.png');
+
+        
+        this.load.image('btn-restart', 'assets/btn-restart.png');
+        this.load.image('btn-start', 'assets/btn-start.png');
+
         this.load.spritesheet('enemy_1',
             'assets/enemy1.png',
             { frameWidth: 60, frameHeight: 52 }
@@ -226,9 +235,9 @@ class BaseScene extends Phaser.Scene {
         this.player.anims.play('turn');
 
         this.gameOver = true;
+        
+        this.goToNextScene();
     }
-
-    test() { console.log('test') }
 
     generatePasswords() {
         this.passwords = this.physics.add.group();
