@@ -94,8 +94,8 @@ class Scene3 extends BaseScene {
     }
 
     goToNextScene() {
-        let spawned = new GameOverScene();
-        this.scene.add('GameOverScene', spawned, true);
+        let spawned = new FinishScene();
+        this.scene.add('FinishScene', spawned, true);
         this.scene.setActive(false);
     }
 }
