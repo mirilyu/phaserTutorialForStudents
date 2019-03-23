@@ -235,8 +235,6 @@ class BaseScene extends Phaser.Scene {
         this.player.anims.play('turn');
 
         this.gameOver = true;
-        
-        //this.goToNextScene();
     }
 
     generatePasswords() {
