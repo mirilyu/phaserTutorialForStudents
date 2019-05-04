@@ -13,10 +13,10 @@ class Scene3 extends BaseScene {
                 y: 200
             },
             {
-                text: '__code500',
+                text: '_#code500',
                 valid: false,
-                x: 100,
-                y: 125
+                x: 80,
+                y: 25
             },
             {
                 text: '8LNP$__$()',
@@ -33,15 +33,20 @@ class Scene3 extends BaseScene {
             {
                 text: 'openT43_door',
                 valid: true,
-                x: 40,
-                y: 70
+                x: 600,
+                y: 50
             }
         ];
 
         this.obstaclesObj = [
             {
-                x: 200,
+                x: 120,
                 y: 200,
+                key: 'obstacle_3'
+            },
+            {
+                x: 200,
+                y: 430,
                 key: 'obstacle_3'
             },
             {
@@ -57,6 +62,11 @@ class Scene3 extends BaseScene {
             {
                 x: 450,
                 y: 300,
+                key: 'obstacle_3.1'
+            },
+            {
+                x: 670,
+                y: 200,
                 key: 'obstacle_3.1'
             }
         ]

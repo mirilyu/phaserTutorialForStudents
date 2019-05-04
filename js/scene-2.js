@@ -7,31 +7,31 @@ class Scene2 extends BaseScene {
 
         this.passwordsData = [
             {
-                text: 'app1eWatch',
+                text: 'appleWatch',
                 valid: true,
                 x: 270,
                 y: 200
             },
             {
-                text: '123mypass',
+                text: 'mooKing',
                 valid: false,
-                x: 650,
-                y: 220
-            },
-            {
-                text: 'FANCY4MNL',
-                valid: false,
-                x: 300,
-                y: 500
-            },
-            {
-                text: '46rBR0102',
-                valid: true,
                 x: 150,
                 y: 350
             },
             {
-                text: 'SAY99friend',
+                text: 'FANCYme',
+                valid: false,
+                x: 400,
+                y: 500
+            },
+            {
+                text: 'championSHEEP',
+                valid: true,
+                x: 600,
+                y: 220
+            },
+            {
+                text: 'slugFrienD',
                 valid: true,
                 x: 40,
                 y: 70
@@ -45,18 +45,28 @@ class Scene2 extends BaseScene {
                 key: 'obstacle_2'
             },
             {
-                x: 500,
-                y: 80,
+                x: 130,
+                y: 200,
                 key: 'obstacle_2'
             },
             {
-                x: 700,
-                y: 500,
+                x: 550,
+                y: 100,
+                key: 'obstacle_2'
+            },
+            {
+                x: 300,
+                y: 540,
                 key: 'obstacle_2.1'
             },
             {
                 x: 400,
                 y: 350,
+                key: 'obstacle_2.1'
+            },
+            {
+                x: 670,
+                y: 400,
                 key: 'obstacle_2.1'
             }
         ]
