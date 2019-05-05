@@ -1,6 +1,3 @@
-var score = 0;
-var scoreText = "";
-
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -59,22 +56,18 @@ var obstaclesObj = [
     {
         x: 200,
         y: 200,
-        key: 'obstacle_1'
     },
     {
         x: 500,
         y: 80,
-        key: 'obstacle_1'
     },
     {
         x: 700,
         y: 500,
-        key: 'obstacle_1'
     },
     {
         x:400,
         y: 350,
-        key: 'obstacle_1'
     }
 ]
 
@@ -99,7 +92,7 @@ function create() {
             this.score += 1;
             this.stars.create(x, 20, 'star');
         } else {
-            this.hitEnemy();
+            this.hitWrongPass();
         }
     
         if (this.score >= this.correctPassNumber) {
@@ -107,34 +100,29 @@ function create() {
         }
     }
     
-    this.hitEnemy = function() {
+    this.hitWrongPass = function() {
         this.health--;
         this.lives.children.entries[this.health].alpha = 0;
     
-        if (this.health == 0) {
-            this.gameOver();
-            return;
-        }
+        if (this.health == 0) { this.gameOver(); }
     
         this.player.x = 100;
         this.player.y = 450;
     
         var blinkNum = 0;
-        var blinkInterval = setInterval(() => {
+        var blinkInterval = setInterval(function() {
             blinkNum++;
             if (blinkNum == 8) {
                 this.player.alpha = 1;
                 clearInterval(blinkInterval);
                 return;
             }
-    
             if (this.player.alpha == 0) {
                 this.player.alpha = 1;
             } else {
                 this.player.alpha = 0;
             }
         }, 400);
-    
     }
     
     this.gameOver = function() {
@@ -145,6 +133,8 @@ function create() {
         this.player.anims.play('turn');
     
         this.gameOver = true;
+
+        alert("Game Over");
     }
     
     this.generatePasswords = function() {
@@ -161,16 +151,16 @@ function create() {
     }
 
     this.score = 0;
-    this.correctPassNumber = passwordsData.filter(function(pass) { return pass.valid }).length;
+    this.correctPassNumber = 3;
 
     this.add.image(400, 300, "ground_1");
 
     // obstacles
     this.obstacles = this.physics.add.staticGroup();
-    
-    obstaclesObj.forEach(function(obstacle) {
-        this.create(obstacle.x, obstacle.y, obstacle.key);
-    }, this.obstacles);
+
+    for (var i = 0; i < 3; i++) {
+        this.obstacles.create(obstaclesObj[i].x, obstaclesObj[i].y, "obstacle_1");
+    }
 
     this.player = this.physics.add.sprite(100, 450, 'hero');
     this.player.setCollideWorldBounds(true);
@@ -222,12 +212,12 @@ function create() {
     this.lives = this.physics.add.group(
         {
             key: 'life',
-            repeat: 2,
+            repeat: 1,
             setXY: { x: 700, y: 20, stepX: 30 }
         }
     );
 
-    this.health = 3;
+    this.health = 2;
 }
 
 function update() {
