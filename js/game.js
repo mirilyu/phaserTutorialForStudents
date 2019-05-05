@@ -52,28 +52,11 @@ var passwordsData = [
     },
 ];
 
-var obstaclesObj = [
-    {
-        x: 200,
-        y: 200,
-    },
-    {
-        x: 500,
-        y: 80,
-    },
-    {
-        x: 700,
-        y: 500,
-    },
-    {
-        x:400,
-        y: 350,
-    }
-]
+var obstaclesObj = [];
 
 function preload() {
     this.load.image('ground_1', 'assets/bg1.png');
-    this.load.image('obstacle_1', 'assets/obstacle1.png');
+    this.load.image('obstacle_1', '<path_to_asset>');
     this.load.image('star', 'assets/star.png');
     this.load.image('life', 'assets/life.png');
     this.load.spritesheet('hero',
@@ -158,9 +141,9 @@ function create() {
     // obstacles
     this.obstacles = this.physics.add.staticGroup();
 
-    for (var i = 0; i < 3; i++) {
-        this.obstacles.create(obstaclesObj[i].x, obstaclesObj[i].y, "obstacle_1");
-    }
+    //for (var i = 0; i < 3; i++) {
+    //    this.obstacles.create(obstaclesObj[i].x, obstaclesObj[i].y, "obstacle_1");
+    //}
 
     this.player = this.physics.add.sprite(100, 450, 'hero');
     this.player.setCollideWorldBounds(true);
